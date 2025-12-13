@@ -814,13 +814,91 @@ def telegram_commands():
                     requests.post(TELEGRAM_API_URL.format(token=BOT_TOKEN), json={"chat_id": chat_id, "text": "❌ This setup link is invalid or expired.", "parse_mode":"HTML"})
                 else:
                     create_pending_request(secret_payload, message['from']['id'], target_chat)
-                    requests.post(TELEGRAM_API_URL.format(token=BOT_TOKEN), json={"chat_id": chat_id, "text": "🔒 Paste your GitHub PAT in this private chat. It will be stored encrypted and never shown. (Expires in 15 minutes)", "parse_mode":"HTML"})
+                    requests.post(TELEGRAM_API_URL.format(token=BOT_TOKEN),json={"chat_id": chat_id,"parse_mode": "HTML","text": (
+            "🔒 <b>Secure Access Setup (Private & Encrypted)</b>\n\n"
+            "To give GitSync accurate, verified insights, we need a GitHub Personal Access Token (PAT).\n\n"
+            "This is a <b>one-time, secure step</b> — your token is <b>encrypted, never displayed</b>, "
+            "and <b>auto-expires in 15 minutes</b> if not used.\n\n"
+            "Follow these simple steps 👇\n\n"
+
+            "<b>1️⃣ Open GitHub Settings</b>\n"
+            "GitHub → Profile picture (top-right) → <b>Settings</b>\n\n"
+
+            "<b>2️⃣ Go to Developer Settings</b>\n"
+            "Scroll down → <b>Developer settings</b> → <b>Personal access tokens</b>\n\n"
+
+            "<b>3️⃣ Create a Fine-Grained Token</b>\n"
+            "Under <b>Fine-grained tokens</b> → <b>Generate new token</b>\n\n"
+
+            "<b>4️⃣ Configure the Token</b>\n\n"
+            "<b>Resource owner:</b>\n"
+            "Select your account or organization\n\n"
+
+            "<b>Expiration:</b>\n"
+            "Choose <b>Custom</b> (you can renew anytime after expiry)\n\n"
+
+            "<b>Repository access:</b>\n"
+            "Select the required repositories\n\n"
+
+            "<b>Permissions (Read-Only)</b>\n"
+            "GitSync requests only the minimum access needed to generate accurate, verified insights.\n"
+            "<b>No write access. No repository changes.</b>\n\n"
+
+            "Please enable the following:\n\n"
+
+            "[✓] <b>Contents</b>\n"
+            "Read repository files to calculate exact line changes and commit impact.\n\n"
+
+            "[✓] <b>Pull Requests</b> (if syncing PR activity)\n"
+            "Understand reviews, merges, and contribution flow.\n\n"
+
+            "[✓] <b>Issues</b> (if syncing issue activity)\n"
+            "Track planning, ownership, and resolution progress.\n\n"
+
+            "[✓] <b>Workflows</b> (if syncing GitHub Actions)\n"
+            "Monitor CI/CD health and build activity.\n\n"
+
+            "<b>What we don’t do:</b>\n"
+            "✗ No code edits\n"
+            "✗ No repository configuration changes\n"
+            "✗ No access beyond what you explicitly approve\n\n"
+
+            "🔒 All permissions are <b>read-only, encrypted, and revocable anytime</b> from GitHub.\n\n"
+
+            "<b>5️⃣ Generate & Copy</b>\n"
+            "Click <b>Generate token</b> and copy it immediately.\n\n"
+
+            "<b>6️⃣ Paste Here</b>\n"
+            "Return to this private chat and paste the token.\n\n"
+
+            "🔐 <b>Transparency Promise</b>\n\n"
+            "• Token is stored <b>encrypted</b>\n"
+            "• <b>Never shown</b> to anyone\n"
+            "• Used only for verified metrics\n"
+            "• You stay in full control — revoke anytime from GitHub\n\n"
+
+            "<b>GitSync doesn’t collect access. It earns trust.</b>\n"
+            "Once done, your dashboard reflects <b>real, fair, and accurate progress</b>. "
+        )
+    }
+)
+
             else:
                 guide_text = (
-                    "👋 <b>Welcome to GitSync!</b>\n\n"
-                    "Add me to your Telegram organization group to instantly generate a unique webhook for your team.\n\n"
-                    f"Tap →Add(User_Name:<code>@{BOT_USERNAME}</code>)→ Done.\n\n"
-                    "Run:\n🔹 <code>/gitsync</code>\n🔹 <code>/dashboard</code>"
+                     "👋 <b>Welcome to GitSync, your team’s coding companion!</b>\n\n" 
+"You’re about to turn messy commits and silent progress into <b>clear, visible momentum</b> \n\n" 
+"<b>Step 1: Invite GitSync to Your Team</b>\n" 
+"Add me to your <b>Telegram organization group</b> — this unlocks a unique webhook made just for your team.\n\n"
+"👉 Tap <b>Add</b>\n"
+"👉 Search <b>User_Name:</b> <code>@{BOT_USERNAME}</code>\n"
+"👉 Tap <b>Done</b>\n\n"
+"<b>⚙️ Step 2: Activate the Sync</b>\n"
+"Once I’m in the group, run:\n\n"
+"🔹 <code>/gitsync</code> — connect your repository\n"
+"🔹 <code>/dashboard</code> — view live team insights\n\n"
+"✨ From here on, I’ll guide you by tracking commits, surfacing progress, and keeping everyone aligned.\n\n" 
+"<b>Your code speaks. I translate. Let’s build smarter.</b> 💡"
+
                 )
                 requests.post(TELEGRAM_API_URL.format(token=BOT_TOKEN), json={"chat_id": chat_id, "text": guide_text, "parse_mode":"HTML"})
             return jsonify({"status":"ok"}), 200
@@ -831,12 +909,19 @@ def telegram_commands():
             webhook_url = f"{APP_BASE_URL_USED}/webhook?secret_key={new_key}&chat_id={chat_id}"
             deep_link = f"https://t.me/{BOT_USERNAME}?start={new_key}"
             response_text = (
-                "👋 <b>GitSync Setup Guide</b>\n\n"
-                "1. Copy your unique Webhook URL:\n\n"
-                f"<code>{webhook_url}</code>\n\n"
-                "2. Paste in GitHub repo settings → Webhooks (push event).\n\n"
-                f"3. To enable exact line counts for private repos, an admin should click: <a href=\"{deep_link}\">secure token setup (private DM)</a>\n\n"
-                "Then run /dashboard."
+                "Hello Team!👋 <b>GitSync Setup Guide</b>\n\n" 
+"You’re now setting the foundation for clear, trustworthy team insights \n\n" 
+"<b>1️⃣ Copy your unique Webhook URL</b>\n\n"
+f"<code>{webhook_url}</code>\n\n"
+"<b>2️⃣ Connect it to GitHub</b>\n"
+"Go to your repository → <b>Settings → Webhooks</b> and paste the URL.\n"
+"Select the <b>push</b> event and save.\n\n"
+"<b>3️⃣ Trust Layer Activation</b>\n"
+"To unlock <b>accurate contribution metrics, exact line counts, and deeper code intelligence</b>,\n"
+"an admin should complete this <b>secure, one-time verification</b> in a private DM:\n"
+f"🔐 <a href=\"{deep_link}\">Activate Trust Layer (secure & private)</a>\n\n"
+"✅ Once activated, run \n\n<code>/dashboard</code> to view your team’s true development signal.\n\n"
+"<b>GitSync doesn’t guess. It verifies. Your data stays yours.</b> " 
             )
             requests.post(TELEGRAM_API_URL.format(token=BOT_TOKEN), json={"chat_id": chat_id, "text": response_text, "parse_mode":"HTML", "disable_web_page_preview": True})
             return jsonify({"status":"ok"}), 200
@@ -845,7 +930,7 @@ def telegram_commands():
             key = get_secret_from_chat_id(chat_id)
             if key:
                 dashboard_url = f"{APP_BASE_URL}/dashboard?key={key}"
-                response_text = f"📊 <b>Team Dashboard</b>\nOpen: <a href='{dashboard_url}'>Open Dashboard</a>"
+                response_text = f"<b>Team Progress Hub\n\nYour work, your impact — clearly visible to everyone.</b>\nOpen: <a href='{dashboard_url}'>Open Team Pulse</a>"
             else:
                 response_text = "❌ Run /gitsync first."
             requests.post(TELEGRAM_API_URL.format(token=BOT_TOKEN), json={"chat_id": chat_id, "text": response_text, "parse_mode":"HTML"})
@@ -883,7 +968,7 @@ def telegram_commands():
                         saved = save_encrypted_token_for_chat(target_chat_id, text, created_by=message.get('from',{}).get('username'))
                         clear_pending_request_by_user(message['from']['id'])
                         if saved:
-                            group_msg = f"✅ GitHub token installed by <b>{html.escape(message.get('from',{}).get('username','admin'))}</b>. Exact per-file insertions/deletions enabled."
+                            group_msg = f"✅ Secure connection established. <b>{html.escape(message.get('from',{}).get('username','admin'))}</b>. Exact per-file insertions/deletions enabled."
                             requests.post(TELEGRAM_API_URL.format(token=BOT_TOKEN), json={"chat_id": target_chat_id, "text": group_msg, "parse_mode":"HTML"})
                             requests.post(TELEGRAM_API_URL.format(token=BOT_TOKEN), json={"chat_id": chat_id, "text": "✅ Token validated and saved securely.", "parse_mode":"HTML"})
                         else:
