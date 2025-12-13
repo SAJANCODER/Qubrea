@@ -890,7 +890,7 @@ def telegram_commands():
 "<b>Step 1: Invite GitSync to Your Team</b>\n" 
 "Add me to your <b>Telegram organization group</b> — this unlocks a unique webhook made just for your team.\n\n"
 "👉 Tap <b>Add</b>\n"
-"👉 Search <b>User_Name:</b> <code>@{BOT_USERNAME}</code>\n"
+f"👉 Search <b>User_Name:</b> <code>@{BOT_USERNAME}</code>\n"
 "👉 Tap <b>Done</b>\n\n"
 "<b>⚙️ Step 2: Activate the Sync</b>\n"
 "Once I’m in the group, run:\n\n"
