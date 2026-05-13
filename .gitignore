@@ -3,3 +3,4 @@
 cf.exe
 ./.venv
 ./requirements.txt
+./.idea
