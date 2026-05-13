@@ -1,3 +1,5 @@
 /qubresa
 .env
 cf.exe
+./.venv
+./requirements.txt
